@@ -1,13 +1,17 @@
-import type { Response } from "express";
-import type { AuthenticatedRequest } from "../types/express.js";
+import type { Request, Response } from "express";
 import { prisma } from "../db/client.js";
 
 /**
  * --- GET /users/:userId ---
  * Returns a user's info
  */
-export const getUser = async (req: AuthenticatedRequest, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorised (controller)" })
+    }
+
+
     // get the user ID from the JWT token
     const tokenUserId = req.user.userId;
 

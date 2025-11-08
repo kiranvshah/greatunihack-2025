@@ -27,7 +27,7 @@ paths:
                 userId:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Successful login
           content:
             application/json:
@@ -36,14 +36,14 @@ paths:
                 properties:
                   token:
                     type: string
-  
+
   /perks:
     get:
       summary: Get list of perks
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: List of perks
           content:
             application/json:
@@ -58,7 +58,7 @@ paths:
                       type: string
                     description:
                       type: string
-  
+
   /users/{userId}:
     get:
       summary: Get user details
@@ -71,7 +71,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: User details
           parameters:
             - name: userId
@@ -93,9 +93,9 @@ paths:
                   next_payment_due:
                     type: date
           responses:
-          '200':
+          "200":
             description: User info
-          '401':
+          "401":
             description: Unauthorized (no token)
-          '403':
+          "403":
             description: Forbidden (wrong user)

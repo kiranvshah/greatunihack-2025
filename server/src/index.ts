@@ -1,4 +1,4 @@
-import "dotenv/config"
+import "dotenv/config";
 import express from "express";
 import { prisma } from "./db/client.js";
 import apiRoutes from "./api/index.js";
@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 const swaggerDocument = YAML.load("./swagger.yaml");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/v1", apiRoutes);
 
