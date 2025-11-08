@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.options("*", cors());
+app.options(/(.*)/, cors());
 
 app.use(express.json());
 app.use("/api/v1", apiRoutes);
