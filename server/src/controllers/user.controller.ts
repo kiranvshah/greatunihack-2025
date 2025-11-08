@@ -34,6 +34,7 @@ export const getUser = async (req: Request, res: Response) => {
         name: true,
         wallet_balance: true,
         next_payment_due: true,
+        cost_per_month: true,
       },
     });
 
