@@ -27,7 +27,7 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
       });
 
       const amount = Number(monthsPaidFor) * Number(user.cost_per_month);
-      const creditsToAdd = amount;
+      const creditsToAdd = Math.floor(amount / 10);
 
       // create tenancy transaction
       const transaction = await tx.tenancyTransaction.create({
