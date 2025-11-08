@@ -1,8 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-import type { AuthenticatedRequest } from "../types/express.js";
-
 export const AuthMiddleware = (
   req: Request,
   res: Response,
@@ -27,8 +25,8 @@ export const AuthMiddleware = (
 
     const payload = jwt.verify(token, secret);
 
-    // attach payload to request object. cast request to custom AuthenticatedRequest type
-    (req as AuthenticatedRequest).user = payload as { userId: number };
+    // attach payload to request object
+    req.user = payload as { userId: number };
 
     // call the next middleware or route handler
     next();

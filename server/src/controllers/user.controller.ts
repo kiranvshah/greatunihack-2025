@@ -8,9 +8,8 @@ import { prisma } from "../db/client.js";
 export const getUser = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
-      return res.status(401).json({ error: "Unauthorised (controller)" })
+      return res.status(401).json({ error: "Unauthorised (controller)" });
     }
-
 
     // get the user ID from the JWT token
     const tokenUserId = req.user.userId;
