@@ -13,9 +13,19 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchEntries = async () => {
+      const authToken = sessionStorage.getItem("authToken") || "";
+      const userId = sessionStorage.getItem("userId") || "";
+
       try {
-        const res = await fetch("/api/dashboard");
+        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/users/${userId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${authToken}`,
+          }   
+        })
         const data = await res.json();
+
+        console.log(data);
         setEntries(data);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -25,7 +35,7 @@ export default function DashboardPage() {
     };
 
     fetchEntries();
-      }, []);
+  }, []);
 
   return (
     <section>
