@@ -7,7 +7,7 @@ import userRoutes from "./user.routes.js";
 const router: Router = Router();
 
 router.use(authRoutes);
-router.use(transactionRoutes)
+router.use(transactionRoutes);
 router.use(perkRoutes);
 router.use(userRoutes);
 

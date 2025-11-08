@@ -53,7 +53,10 @@ export const getUser = async (req: Request, res: Response) => {
  * --- GET /users/:userId/historical-perk-transactions ---
  * Returns a user's past perk transactions
  */
-export const getUserHistoricalPerkTransactions = async (req: Request, res: Response) => {
+export const getUserHistoricalPerkTransactions = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorised (controller)" });
@@ -75,18 +78,20 @@ export const getUserHistoricalPerkTransactions = async (req: Request, res: Respo
     // fetch the data
     const perkTransactions = await prisma.perkTransaction.findMany({
       where: {
-        user_id: urlUserId
+        user_id: urlUserId,
       },
       select: {
         id: true,
         date_time: true,
         perk: true,
-      }
-    })
+      },
+    });
 
     res.status(200).json(perkTransactions);
   } catch (error) {
-    console.error(error)
-    res.status(500).json({error: "Failed to retrieve historical perk transactions"})
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Failed to retrieve historical perk transactions" });
   }
-}
+};

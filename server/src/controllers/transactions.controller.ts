@@ -9,67 +9,60 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
   try {
     const { monthsPaidFor } = req.body;
 
-
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorised (controller)" });
     }
     const userId = req.user.userId;
 
     if (!monthsPaidFor || Number(monthsPaidFor) <= 0) {
-      return res.status(400).json({ error: "monthsPaidFor is required and must be a positive integer" });
+      return res
+        .status(400)
+        .json({
+          error: "monthsPaidFor is required and must be a positive integer",
+        });
     }
 
-    // find user
-    const user = await prisma.user.findUniqueOrThrow({
-      where: {
-        id: Number(userId),
-      },
-    });
+    const result = await prisma.$transaction(async (tx) => {
+      // find user
+      const user = await tx.user.findUniqueOrThrow({
+        where: { id: userId },
+      });
 
-    const amount = monthsPaidFor * Number(user.cost_per_month);
+      const amount = Number(monthsPaidFor) * Number(user.cost_per_month);
+      const creditsToAdd = amount;
 
-    // create tenancy transaction
-    await prisma.tenancyTransaction.create({
-      data: {
-        amount,
-        user_id: userId,
-      },
-    });
-
-    // add credit to balance
-    const creditsToAdd = amount;
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        wallet_balance: {
-          increment: creditsToAdd,
+      // create tenancy transaction
+      const transaction = await tx.tenancyTransaction.create({
+        data: {
+          amount,
+          user_id: user.id,
         },
-      },
+      });
+
+      // update user's wallet and payment date
+      const oldNextPaymentDue = user.next_payment_due;
+      const newNextPaymentDue = new Date(
+        oldNextPaymentDue.setMonth(
+          oldNextPaymentDue.getMonth() + monthsPaidFor,
+        ),
+      );
+
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          wallet_balance: {
+            increment: creditsToAdd,
+          },
+          next_payment_due: newNextPaymentDue,
+        },
+      });
+      return { transaction, updatedUser };
     });
 
-    // update next_payment_by field on user
-    const currentNextPaymentDue = user.next_payment_due;
-    const newNextPaymentDue = new Date(
-      currentNextPaymentDue.setMonth(
-        currentNextPaymentDue.getMonth() + monthsPaidFor
-      )
-    );
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        next_payment_due: newNextPaymentDue,
-      },
-    });
-
-    res.status(201).json({ message: "tenancy transaction created successfully" });
-
+    res.status(201).json(result);
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: "creating tenancy transaction failed" })
+    res.status(401).json({ error: "creating tenancy transaction failed" });
   }
 };
 
@@ -80,4 +73,4 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
 export const createPerkTransaction = async (req: Request, res: Response) => {
   // todo
   res.status(501);
-}
+};
