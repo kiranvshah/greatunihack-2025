@@ -1,0 +1,33 @@
+### @name login
+# login to get a token
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "userId": 1
+}
+
+### grab the token from the response
+@token = {{login.response.body.token}}
+
+
+###
+# get all available perks
+GET http://localhost:3000/api/v1/perks
+
+
+###
+# get user info (success). uses token from earlier login request
+GET http://localhost:3000/api/v1/users/1
+Authorization: Bearer {{token}}
+
+
+###
+# get user info (auth failure - no token). test middleware blocks this
+GET http://localhost:3000/api/v1/users/1
+
+
+###
+# get user info (forbidden). we are logged in as user 1, but trying to see user 2's info
+GET http://localhost:3000/api/v1/users/2
+Authorization: Bearer {{token}}
