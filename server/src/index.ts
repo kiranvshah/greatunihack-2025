@@ -1,18 +1,16 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { prisma } from "./db/client.js";
 import apiRoutes from "./api/index.js";
-import swaggerUi from "swagger-ui-express";
-import YAML from "yamljs";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
+app.options("*", cors());
+
 app.use(express.json());
-
-const swaggerDocument = YAML.load("./swagger.yaml");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use("/api/v1", apiRoutes);
 
 const startServer = async () => {
