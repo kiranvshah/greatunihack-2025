@@ -5,11 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useWindowSize } from 'react-use'
+import Confetti from 'react-confetti'
 
 export default function PaymentsPage() {
 
   const [view, setView] = useState<"default" | "inProgress" | "completed">("default");
   const [transfer, setTransfer] = useState(false);
+
+  const { width, height } = useWindowSize()
 
   const fetchPayment = async () => {
     setTransfer(true);
@@ -91,6 +95,7 @@ export default function PaymentsPage() {
 
           {view === "completed" && (
             <div className="ml-2 leading-10 backdrop-blur-md shadow-md rounded-2xl p-10">
+              <Confetti width={400} height={height}/>
               <p className="text-2xl py-5 font-semibold text-center"> Payment successful</p>
               <p className="font-medium text-gray-600"> You have earned 300 reward credits!</p>
               <p className="font-medium text-gray-600"> Your total credit count is 500.</p>

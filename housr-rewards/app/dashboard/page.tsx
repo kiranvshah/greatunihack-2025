@@ -87,32 +87,36 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="p-10 flex justify-center gap-10">
-          <div className="ml-10 leading-10">
-            <p className="text-2xl py-5 font-semibold text-center"> Oxford Road, Manchester</p>
-            <p className="font-semibold text-gray-600">Cost of bills: £60/month </p>
-            <p className="font-semibold text-gray-600">Total cost per month: £800/month</p>
-            <p className="font-semibold text-gray-600">Payment due by: </p>
-            <br></br>
-            <Link
-                  href="/dashboard"
-                  className="relative inline-flex items-center justify-center
-                    px-20 py-2 overflow-hidden font-medium text-white rounded-full
-                    transition-all duration-300 ease-out
-                    bg-[linear-gradient(180deg,#22704d,#1f9c5b,#b1e3c5)]
-                    bg-[length:200%_200%]
-                    animate-gradient
-                    hover:scale-105
-                    focus:outline-none"
-                >
-                  Pay for 1 month (£800.00)
-            </Link>
-            <p className="py-2"></p>
-
-            <p className="font-medium text-gray-600">Earn additional rewards when you make a single payment for 3 months.</p>
-          </div>
-
+        <div>
+          <a className="ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10">
+            <a className="font-bold text-xl text-gray-800">Transaction</a>
+            <a className="font-bold text-xl text-gray-800">Date and Time</a>
+            <a className="font-bold text-xl text-gray-800">Credit cost</a>
+            <a className="font-bold text-xl text-gray-800">Balance</a>
+          </a>
+          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </a>
+          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </a>
+          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </a>
         </div>
+
     </section>
   );
 }

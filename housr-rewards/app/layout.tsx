@@ -2,6 +2,7 @@
 import "./globals.css";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
+import type { ReactNode } from 'react';
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ export const metadata = {
   description: "A simple 3-page site built with Next.js App Router",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
