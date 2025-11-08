@@ -23,6 +23,12 @@ export default function PaymentsPage() {
   }
 
   useEffect(() => {
+    (async () => {
+      
+    })(); 
+  }, []);
+
+  useEffect(() => {
     if (view === "inProgress") {
       fetchPayment();
       setView("completed");
