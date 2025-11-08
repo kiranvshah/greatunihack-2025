@@ -14,6 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.10.0",
     "dotenv": "^17.2.3",
     "prettier": "3.6.2",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
