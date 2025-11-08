@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client.js";
 
 const prisma = new PrismaClient();
@@ -19,12 +20,14 @@ async function main() {
         name: "Tom Jones",
         wallet_balance: 100,
         next_payment_due: new Date("2025-12-01"),
+        cost_per_month: 600.00,
       },
       {
         id: 2,
         name: "Alice Smith",
         wallet_balance: 41,
         next_payment_due: new Date("2025-11-05"),
+        cost_per_month: 900.00,
       },
     ],
   });

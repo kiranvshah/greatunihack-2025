@@ -19,6 +19,7 @@ model User {
   name              String
   wallet_balance    Int
   next_payment_due  DateTime @db.Date
+  cost_per_month    Decimal @db.Decimal(10, 2) // in £
 
   // relations
   tenancy_transactions TenancyTransaction[]
