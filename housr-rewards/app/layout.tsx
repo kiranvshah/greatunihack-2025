@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
         <main className="p-8">{children}</main>
 
         <footer className="p-4 text-center text-gray-500 border-t">
-          © {new Date().getFullYear()} My Web App
+          © {new Date().getFullYear()} GreatUniHack
         </footer>
       </body>
     </html>
