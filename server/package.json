@@ -9,7 +9,7 @@
     "prettier:write": "prettier --write .",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:studio": "prisma studio",
-    "run": "tsx src/index.ts"
+    "start": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -29,8 +29,6 @@
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "jsonwebtoken": "^9.0.2"
   }
 }
