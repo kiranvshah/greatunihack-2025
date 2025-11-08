@@ -21,12 +21,3 @@ export const getPerks = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to fetch perks" });
   }
 };
-
-/**
- * --- POST /perks ---
- * adds entry to perks table
- */
-export const createPerk = async (req: Request, res: Response) => {
-  // todo
-  res.status(501);
-};
