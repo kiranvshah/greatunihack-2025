@@ -15,11 +15,9 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
     const userId = req.user.userId;
 
     if (!monthsPaidFor || Number(monthsPaidFor) <= 0) {
-      return res
-        .status(400)
-        .json({
-          error: "monthsPaidFor is required and must be a positive integer",
-        });
+      return res.status(400).json({
+        error: "monthsPaidFor is required and must be a positive integer",
+      });
     }
 
     const result = await prisma.$transaction(async (tx) => {
@@ -71,6 +69,62 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
  * adds entry to perks table
  */
 export const createPerkTransaction = async (req: Request, res: Response) => {
-  // todo
-  res.status(501);
+  try {
+    const { perkId } = req.body;
+
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorised (controller)" });
+    }
+    const userId = req.user.userId;
+
+    if (!perkId) {
+      return res.status(400).json({
+        error: "perkId is required",
+      });
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      // find perk
+      const perk = await tx.perk.findUniqueOrThrow({
+        where: { id: Number(perkId) },
+      });
+
+      // find user
+      const user = await tx.user.findUniqueOrThrow({
+        where: { id: userId },
+      });
+
+      // check user has enough balance
+      if (user.wallet_balance < perk.cost) {
+        throw new Error("Insufficient balance");
+      }
+
+      // create perk transaction
+      const transaction = await tx.perkTransaction.create({
+        data: {
+          perk_id: perk.id,
+          user_id: user.id,
+        },
+      });
+
+      // deduct cost from user's wallet
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          wallet_balance: {
+            decrement: perk.cost,
+          },
+        },
+      });
+
+      return { transaction, updatedUser };
+    });
+
+    res.status(201).json(result);
+  } catch (error) {
+    if (error instanceof Error && error.message === "Insufficient balance") {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+    res.status(401).json({ error: "creating perk transaction failed" });
+  }
 };
