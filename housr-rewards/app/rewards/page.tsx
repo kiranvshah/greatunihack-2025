@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function RewardsPage() {
 
-  const [view, setView] = useState<"default" | "redeem">("default");
+  const [view, setView] = useState<"default" | "inProgress" | "redeem">("default");
   const [transfer, setTransfer] = useState(false);
 
   const [copied, setCopied] = useState(false);
@@ -20,6 +20,18 @@ export default function RewardsPage() {
     console.log("Payment processed");
     setTransfer(false);
   }
+
+  const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
+
+  useEffect(() => {
+    if (view === "inProgress") {
+      (async () => {
+        await fetchPayment();
+        await sleep(2000);
+        setView("redeem");
+      })();
+    }
+  }, [view]);
 
   const handleCopy = async () => {
     try {
@@ -38,6 +50,7 @@ export default function RewardsPage() {
         <p className="mt-2 text-gray-600 text-center">
           View your credits and redeem exclusive rewards here.
         </p>
+        <br></br>
         {view === "default" && (  
           <div className="overflow-auto whitespace-nowrap">
             <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
@@ -50,9 +63,9 @@ export default function RewardsPage() {
                   height={20}
                   priority
                 />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
+              <p className="text-3xl py-5 font-semibold text-center mr-120">10% off next rent payment</p>
                 <button
-                        onClick={() => setView("redeem")}
+                        onClick={() => setView("inProgress")}
                         /*href="/dashboard"*/
                         className="relative inline-flex items-center justify-center
                           px-20 py-2 overflow-hidden font-bold text-white rounded-full
@@ -76,9 +89,9 @@ export default function RewardsPage() {
                   height={20}
                   priority
                 />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
+              <p className="text-3xl py-5 font-semibold text-center mr-155">Get a free coffee!</p>
                 <button
-                        onClick={() => setView("redeem")}
+                        onClick={() => setView("inProgress")}
                         /*href="/dashboard"*/
                         className="relative inline-flex items-center justify-center
                           px-20 py-2 overflow-hidden font-bold text-white rounded-full
@@ -102,9 +115,9 @@ export default function RewardsPage() {
                   height={20}
                   priority
                 />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
+              <p className="text-3xl py-5 font-semibold text-center mr-135">Watch a movie for free!</p>
                 <button
-                        onClick={() => setView("redeem")}
+                        onClick={() => setView("inProgress")}
                         /*href="/dashboard"*/
                         className="relative inline-flex items-center justify-center
                           px-20 py-2 overflow-hidden font-bold text-white rounded-full
@@ -120,6 +133,13 @@ export default function RewardsPage() {
             </a>
           </div>
         )}  
+
+        {view === "inProgress" && (
+            <div className="ml-60 mr-60 leading-10 backdrop-blur-md shadow-md rounded-2xl p-10">
+            <p className="text-2xl font-semibold text-center my-10">Generating your unique code...</p>
+              <div className="loader m-auto"></div>
+            </div>
+          )}
 
         {view === "redeem" && (
           <div className="ml-60 mr-60 leading-10 backdrop-blur-md shadow-md rounded-2xl p-10">
