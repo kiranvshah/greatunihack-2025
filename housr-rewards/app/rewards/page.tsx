@@ -38,7 +38,7 @@ export default function RewardsPage() {
       const userId = sessionStorage.getItem("userId") || "";
 
       try {
-        if (!perkIdToRedeem) throw new Error("No perk ID to redeem");
+        if (!perkIdToRedeem) return console.log("no perk id to redeem, stopped");
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/perk-transactions`, {
           method: "POST",
