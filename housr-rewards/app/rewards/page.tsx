@@ -62,8 +62,8 @@ export default function RewardsPage() {
           shadow-md rounded-2xl p-5 justify-between flex gap-10">
             <Image
                 /*className="dark:invert"*/
-                src="/rent.svg"
-                alt="rent icon"
+                src="/coffee.svg"
+                alt="coffee icon"
                 width={80}
                 height={20}
                 priority
@@ -88,8 +88,8 @@ export default function RewardsPage() {
           shadow-md rounded-2xl p-5 justify-between flex gap-10">
             <Image
                 /*className="dark:invert"*/
-                src="/rent.svg"
-                alt="rent icon"
+                src="/movie.svg"
+                alt="movie icon"
                 width={80}
                 height={20}
                 priority

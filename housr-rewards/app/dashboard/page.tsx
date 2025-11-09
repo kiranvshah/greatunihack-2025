@@ -10,6 +10,7 @@ export default function DashboardPage() {
 
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cred, setCred] = useState(0);
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -26,6 +27,8 @@ export default function DashboardPage() {
         const data = await res.json();
 
         console.log(data);
+        setCred(data.wallet_balance);
+        console.log(data.wallet_balance);
         setEntries(data);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -33,7 +36,6 @@ export default function DashboardPage() {
         setLoading(false);
       }
     };
-
     fetchEntries();
   }, []);
 
@@ -55,11 +57,45 @@ export default function DashboardPage() {
                 animate-gradient
                 hover:scale-105
                 focus:outline-none">
-              You have: 1500 credits
+              You have: {cred} credits
           </p>
         </div>
+        
+        <div>
+          <div className="ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10">
+            <a className="font-bold text-xl text-gray-800">Transaction</a>
+            <a className="font-bold text-xl text-gray-800">Date and Time</a>
+            <a className="font-bold text-xl text-gray-800">Credit cost</a>
+            <a className="font-bold text-xl text-gray-800">Balance</a>
+          </div>
+          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </div>
+          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </div>
+          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
+          shadow-md rounded-2xl p-5 justify-between flex gap-10">
+            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
+            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
+            <a className="font-semibold text-xl text-gray-800">-100</a>
+            <a className="font-semibold text-xl text-gray-800">50</a>
+          </div>
+        </div>
 
-        <div className="max-h-96 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+    </section>
+  );
+}
+
+/*<div className="max-h-96 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
           {loading ? (
             <p className="text-gray-500">Loading...</p>
           ) : entries.length === 0 ? (
@@ -70,7 +106,7 @@ export default function DashboardPage() {
                 key={entry.id}
                 className="flex justify-between items-center bg-gray-50 border border-gray-100 rounded-xl p-4 hover:bg-gray-100 transition"
               >
-                {/* Left side: transaction name + date */}
+                {// Left side: transaction name + date}
                 <div>
                   <p className="font-medium text-gray-800">{entry.name}</p>
                   <p className="text-sm text-gray-500">
@@ -78,7 +114,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                {/* Right side: credit change + balance */}
+                {// Right side: credit change + balance }
                 <div className="text-right">
                   <p
                     className={`font-semibold ${
@@ -96,37 +132,4 @@ export default function DashboardPage() {
             ))
           )}
         </div>
-
-        <div>
-          <a className="ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10">
-            <a className="font-bold text-xl text-gray-800">Transaction</a>
-            <a className="font-bold text-xl text-gray-800">Date and Time</a>
-            <a className="font-bold text-xl text-gray-800">Credit cost</a>
-            <a className="font-bold text-xl text-gray-800">Balance</a>
-          </a>
-          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
-          </a>
-          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
-          </a>
-          <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
-          </a>
-        </div>
-
-    </section>
-  );
-}
+ */

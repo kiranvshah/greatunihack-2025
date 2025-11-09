@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 198 198" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:square;stroke-miterlimit:5;">
+    <g transform="matrix(1,0,0,1,-1218.82,-3680.75)">
+        <g transform="matrix(1,0,0,1,522.253,359.786)">
+            <path d="M894.42,3360.3C894.42,3338.59 876.794,3320.96 855.085,3320.96L735.908,3320.96C714.198,3320.96 696.572,3338.59 696.572,3360.3L696.572,3479.47C696.572,3501.18 714.198,3518.81 735.908,3518.81L855.085,3518.81C876.794,3518.81 894.42,3501.18 894.42,3479.47L894.42,3360.3Z" style="fill:url(#_Radial1);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,0,2851.68)">
+            <g transform="matrix(0.719774,0,0,0.719774,556.293,-1430.48)">
+                <ellipse cx="1053.76" cy="3240.54" rx="77.237" ry="28.704" style="fill:white;"/>
+            </g>
+            <g transform="matrix(0.945048,0,0,0.945048,69.4276,-2314.99)">
+                <path d="M1377.75,3416.51L1349.54,3474.79C1329.34,3483.11 1308.12,3482.91 1285.96,3474.79L1257.75,3416.51C1264.19,3427.03 1287.52,3434.89 1317.75,3434.89C1347.98,3434.89 1371.31,3427.03 1377.75,3416.51Z" style="fill:white;"/>
+            </g>
+            <g transform="matrix(0.945048,0,0,0.945048,71.6382,-2315.96)">
+                <path d="M1367.25,3434.13C1367.25,3434.13 1379.41,3438.7 1380.99,3443.49C1382.57,3448.28 1381.83,3459.26 1376.73,3462.87C1371.62,3466.48 1350.34,3465.16 1350.34,3465.16" style="fill:none;stroke:white;stroke-width:10.58px;"/>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <radialGradient id="_Radial1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-55.036,-166.555,166.555,-55.036,812.681,3518.81)"><stop offset="0" style="stop-color:rgb(70,108,97);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(129,219,147);stop-opacity:1"/></radialGradient>
+    </defs>
+</svg>
