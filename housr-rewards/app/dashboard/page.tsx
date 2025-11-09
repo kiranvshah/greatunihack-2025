@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const [cred, setCred] = useState(0);
 
   useEffect(() => {
-    const fetchEntries = async () => {
+    ;(async () => {
       const authToken = sessionStorage.getItem("authToken") || "";
       const userId = sessionStorage.getItem("userId") || "";
 
@@ -35,8 +35,55 @@ export default function DashboardPage() {
       } finally {
         setLoading(false);
       }
-    };
-    fetchEntries();
+
+      // populate table of historical transactions
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/${userId}/historical-perk-transactions`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${authToken}`,
+          },
+        });
+        interface PerkTransaction {
+          id: number;
+          date_time: string;
+          perk: {
+            id: number;
+            available: boolean;
+            cost: number;
+            description: string;
+            image_url: string;
+            title: string;
+          }
+        }
+        const perkTransactions: PerkTransaction[] = await res.json();
+
+        console.log("Historical transactions:", perkTransactions);
+
+        // sort perk transactions by date, most recent first
+        perkTransactions.sort((a, b) => new Date(b.date_time).getTime() - new Date(a.date_time).getTime());
+
+        const transactionHistoryContainer = document.getElementById("transactionHistory") as HTMLDivElement;
+        for (const transaction of perkTransactions) {
+          const transactionDiv = document.createElement("div");
+          transactionDiv.className = "ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md shadow-md rounded-2xl p-5 justify-between flex gap-10";
+          transactionDiv.innerHTML = `<a class="font-semibold text-xl text-gray-800">${transaction.perk.title}</a>
+            <a class="font-semibold text-xl text-gray-800">${new Date(transaction.date_time).toLocaleDateString()}</a>
+            <a class="font-semibold text-xl text-gray-800">-${transaction.perk.cost}</a>
+            <a class="font-semibold text-xl text-gray-800">N/A</a>`;
+          transactionHistoryContainer.appendChild(transactionDiv);
+        }
+        if (perkTransactions.length === 0) {
+          const noTransactionsDiv = document.createElement("div");
+          noTransactionsDiv.className = "ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10";
+          noTransactionsDiv.innerHTML = `<a class="font-semibold text-xl text-gray-800">No transactions found.</a>`;
+          transactionHistoryContainer.appendChild(noTransactionsDiv);
+        }
+
+      } catch (err) {
+        console.error("Error fetching historical transactions:", err);
+      }
+    })();
   }, []);
 
   return (
@@ -61,33 +108,12 @@ export default function DashboardPage() {
           </p>
         </div>
         
-        <div>
+        <div id ="transactionHistory">
           <div className="ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10">
             <a className="font-bold text-xl text-gray-800">Transaction</a>
             <a className="font-bold text-xl text-gray-800">Date and Time</a>
             <a className="font-bold text-xl text-gray-800">Credit cost</a>
             <a className="font-bold text-xl text-gray-800">Balance</a>
-          </div>
-          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
-          </div>
-          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
-          </div>
-          <div className="ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md 
-          shadow-md rounded-2xl p-5 justify-between flex gap-10">
-            <a className="font-semibold text-xl text-gray-800">Coffee shop voucher</a>
-            <a className="font-semibold text-xl text-gray-800">8/11/25</a>
-            <a className="font-semibold text-xl text-gray-800">-100</a>
-            <a className="font-semibold text-xl text-gray-800">50</a>
           </div>
         </div>
 
