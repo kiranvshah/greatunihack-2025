@@ -12,11 +12,13 @@ export default function HomePage() {
 
   useEffect(() => {
     (async () => {
+      console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+
       // runs on page load
       await setAuthToken(sessionStorage.getItem("authToken") || "");
 
       if (authToken === "") {
-  fetch("https://housr-rewards-backend.onrender.com/api/v1/auth/login", {
+  fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
