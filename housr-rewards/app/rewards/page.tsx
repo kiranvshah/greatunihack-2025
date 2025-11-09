@@ -123,9 +123,9 @@ export default function RewardsPage() {
 
         {view === "redeem" && (
           <div className="ml-60 mr-60 leading-10 backdrop-blur-md shadow-md rounded-2xl p-10">
-            <p className="text-xl font-semibold text-center my-10">Generating your unique code...</p>
+            <p className="text-2xl font-semibold text-center my-10">Generating your unique code...</p>
             <div className="flex items-center justify-between w-full max-w-md mx-auto p-3 bg-gray-100 rounded-2xl shadow-sm">
-              <span className="truncate text-gray-800 font-medium">{text}</span>
+              <span className="truncate text-gray-900 font-medium">{text}</span>
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-2"
@@ -133,16 +133,17 @@ export default function RewardsPage() {
                 {copied ? (
                   <>
                     <p className="w-4 h-4 text-green-500" />
-                    <span className="text-green-500">Copied!</span>
+                    <span className="text-green-500 font-medium">Copied!</span>
                   </>
                 ) : (
                   <>
                     <p className="w-4 h-4" />
-                    <span>Copy</span>
+                    <span className='font-medium'>Copy</span>
                   </>
                 )}
               </button>
             </div>
+            <p className="my-8 text-center">You can now spend your code on your next purchase</p>
           </div>
         )}
     </section>
