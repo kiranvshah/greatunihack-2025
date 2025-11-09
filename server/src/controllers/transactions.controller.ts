@@ -99,6 +99,21 @@ export const createPerkTransaction = async (req: Request, res: Response) => {
         throw new Error("Insufficient balance");
       }
 
+      // check if user has any previous perk transactions (for bonus credit logic)
+      const previousPerkTransactions = await tx.perkTransaction.findMany({
+        where: { user_id: user.id },
+      });
+      const isFirstPerkTransaction = previousPerkTransactions.length === 0;
+
+      let bonusCredits = 0;
+      let message = "";
+
+      if (isFirstPerkTransaction) {
+        // award bonus credits for first perk transaction
+        bonusCredits = 5;
+        message = `Congratulations! You earneed 5 bonus credits for redeeming your first perk.`;
+      }
+
       // create perk transaction
       const transaction = await tx.perkTransaction.create({
         data: {
@@ -112,14 +127,14 @@ export const createPerkTransaction = async (req: Request, res: Response) => {
         where: { id: user.id },
         data: {
           wallet_balance: {
-            decrement: perk.cost,
+            decrement: perk.cost -  bonusCredits,
           },
         },
       });
 
       const rewardCode = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-      return { transaction, updatedUser, rewardCode };
+      return { transaction, updatedUser, rewardCode, bonusCredits, message };
     });
 
     res.status(201).json(result);
