@@ -130,7 +130,7 @@ export const createPerkTransaction = async (req: Request, res: Response) => {
       if (isFirstPerkTransaction) {
         // award bonus credits for first perk transaction
         bonusCredits = 5;
-        message = `Congratulations! You earneed 5 bonus credits for redeeming your first perk.`;
+        message = `Congratulations! You earned 5 bonus credits for redeeming your first perk.`;
       }
 
       // create perk transaction
