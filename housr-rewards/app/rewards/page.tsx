@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 
 export default function RewardsPage() {
 
-  const [view, setView] = useState<"default" | "inProgress" | "redeem">("default");
   const [view, setView] = useState<"default" | "redeem">("default");
   const [perkIdToRedeem, setPerkIdToRedeem] = useState<number | null>(null);
   const [transfer, setTransfer] = useState(false);
@@ -20,18 +19,6 @@ export default function RewardsPage() {
     setTransfer(false);
   }
 
-  const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
-
-  useEffect(() => {
-    if (view === "inProgress") {
-      (async () => {
-        await fetchPayment();
-        await sleep(2000);
-        setView("redeem");
-      })();
-    }
-  }, [view]);
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
@@ -42,94 +29,102 @@ export default function RewardsPage() {
     }
   };
 
+  // redeem perk
+  useEffect(() => {
+    const fetchEntries = async () => {
+
+      const authToken = sessionStorage.getItem("authToken") || "";
+      const userId = sessionStorage.getItem("userId") || "";
+
+      try {
+        if (!perkIdToRedeem) throw new Error("No perk ID to redeem");
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/perk-transactions`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            perkId: perkIdToRedeem,
+          }),
+        })
+        const data = await res.json();
+        console.log(data)
+
+        // todo: do something with data
+        
+        
+      } catch (err) {
+        console.error("Error redeeming reward:", err);
+      }
+    };
+    fetchEntries();
+  }, [view, perkIdToRedeem]);
+
+  // populate perks list
+  useEffect(() => {
+    ;(async () => {
+      // populate perks list
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/perks`, {
+        method: "GET",
+      })
+
+      interface Perk {
+        cost: number;
+        description: string;
+        id: number;
+        image_url: string;
+        title: string;
+      }
+      const availablePerks = await res.json() as Perk[];
+
+      const perksContainer = document.getElementById("rewardsList") as HTMLDivElement;
+
+      for (const perk of availablePerks) {
+        const perkDiv = document.createElement("a");
+        perkDiv.className = "ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md shadow-md rounded-2xl p-5 justify-between flex gap-10";
+        perkDiv.innerHTML = `
+          <img src="${perk.image_url}" alt="${perk.title} icon" width="80" height="20" />
+          <p class="text-3xl py-5 font-semibold text-center mr-120"> ${perk.title} - ${perk.cost} credits</p>
+            <button
+                    class="relative inline-flex items-center justify-center
+                      px-20 py-2 overflow-hidden font-bold text-white rounded-full
+                      transition-all duration-300 ease-out text-xl m-2
+                      bg-[linear-gradient(180deg,#22704d,#1f9c5b,#b1e3c5)]
+                      bg-[length:200%_200%]
+                      animate-gradient
+                      hover:scale-105
+                      focus:outline-none"
+                      onclick="() => {
+                        setPerkIdToRedeem(${perk.id});
+                        setView('redeem');
+                      }"
+                >
+                  Redeem
+            </button>
+        `;
+        perksContainer.appendChild(perkDiv);
+
+        const btn = perkDiv.querySelector('button');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            setPerkIdToRedeem(perk.id);
+            setView('redeem');
+          });
+        }
+      }
+      console.log("Perks list:", availablePerks);
+    })()
+  }, []);
 
   return (
     <section>
       <h1 className="text-4xl font-bold text-center">Rewards</h1>
-        <p className="mt-2 text-gray-600 text-center">
-          View your credits and redeem exclusive rewards here.
-        </p>
-        {view === "default" && (  
-          <div className="overflow-auto whitespace-nowrap">
-            <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-            shadow-md rounded-2xl p-5 justify-between flex gap-10">
-              <Image
-                  /*className="dark:invert"*/
-                  src="/rent.svg"
-                  alt="rent icon"
-                  width={80}
-                  height={20}
-                  priority
-                />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
-                <button
-                        onClick={() => setView("redeem")}
-                        /*href="/dashboard"*/
-                        className="relative inline-flex items-center justify-center
-                          px-20 py-2 overflow-hidden font-bold text-white rounded-full
-                          transition-all duration-300 ease-out text-xl m-2
-                          bg-[linear-gradient(180deg,#22704d,#1f9c5b,#b1e3c5)]
-                          bg-[length:200%_200%]
-                          animate-gradient
-                          hover:scale-105
-                          focus:outline-none"
-                      >
-                        Redeem
-                </button>
-            </a>
-            <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-            shadow-md rounded-2xl p-5 justify-between flex gap-10">
-              <Image
-                  /*className="dark:invert"*/
-                  src="/coffee.svg"
-                  alt="coffee icon"
-                  width={80}
-                  height={20}
-                  priority
-                />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
-                <button
-                        onClick={() => setView("redeem")}
-                        /*href="/dashboard"*/
-                        className="relative inline-flex items-center justify-center
-                          px-20 py-2 overflow-hidden font-bold text-white rounded-full
-                          transition-all duration-300 ease-out text-xl m-2
-                          bg-[linear-gradient(180deg,#22704d,#1f9c5b,#b1e3c5)]
-                          bg-[length:200%_200%]
-                          animate-gradient
-                          hover:scale-105
-                          focus:outline-none"
-                      >
-                        Redeem
-                </button>
-            </a>
-            <a className="ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md 
-            shadow-md rounded-2xl p-5 justify-between flex gap-10">
-              <Image
-                  /*className="dark:invert"*/
-                  src="/movie.svg"
-                  alt="movie icon"
-                  width={80}
-                  height={20}
-                  priority
-                />
-              <p className="text-3xl py-5 font-semibold text-center mr-120"> 10% off next rent payment</p>
-                <button
-                        onClick={() => setView("redeem")}
-                        /*href="/dashboard"*/
-                        className="relative inline-flex items-center justify-center
-                          px-20 py-2 overflow-hidden font-bold text-white rounded-full
-                          transition-all duration-300 ease-out text-xl m-2
-                          bg-[linear-gradient(180deg,#22704d,#1f9c5b,#b1e3c5)]
-                          bg-[length:200%_200%]
-                          animate-gradient
-                          hover:scale-105
-                          focus:outline-none"
-                      >
-                        Redeem
-                </button>
-            </a>
-          </div>
+      <p className="mt-2 text-gray-600 text-center">View your credits and redeem exclusive rewards here.</p>
+
+      {view === "default" && (  
+          <div className="overflow-auto whitespace-nowrap" id="rewardsList"></div>
         )}  
 
       {view === "redeem" && (
