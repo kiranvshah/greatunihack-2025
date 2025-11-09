@@ -107,7 +107,7 @@ export default function DashboardPage() {
           <br></br>
           <div className="bg-gray-200 ml-40 mr-40 rounded-full h-4 dark:bg-green-950">
             <div
-              className="h-4 rounded-full bg-gradient-to-r from-green-300 via-turqoise-500 to-green-600 animate-pulse"
+              className="h-4 rounded-full bg-gradient-to-r from-green-600 via-turqoise-500 to-green-300 animate-pulse"
               style={{ width: `${progress*10}%` }}
             ></div> 
           </div>
