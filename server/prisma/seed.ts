@@ -50,6 +50,13 @@ async function main() {
         image_url: "https://www.cameronhouse.co.uk/content/uploads/2024/03/camern-house-cinema-960x1030.jpg",
         available: true,
       },
+      {
+        title: "Gym membership",
+        description: "One month's free gym membership.",
+        cost: 100,
+        image_url: "https://linkspaces.co.uk/wp-content/uploads/2024/05/gb-botanica-gym-link-spaces-slough.jpg",
+        available: true,
+      },
     ],
   });
 
