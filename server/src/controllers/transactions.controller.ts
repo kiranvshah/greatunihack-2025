@@ -27,7 +27,26 @@ export const createTenancyTransaction = async (req: Request, res: Response) => {
       });
 
       const amount = Number(monthsPaidFor) * Number(user.cost_per_month);
-      const creditsToAdd = Math.floor(amount / 10);
+      let creditsToAdd = Math.floor(amount / 10);
+
+      // count number of existing tenancy transactions
+      const tenancyTransactions = await prisma.tenancyTransaction.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          id: true,
+          amount: true,
+        },
+      });
+      let tenancyTransactionCount = 0;
+      tenancyTransactions.forEach((transaction) => {
+        tenancyTransactionCount += Math.floor(Number(transaction.amount) / Number(user.cost_per_month));
+      });
+      if (tenancyTransactionCount >= 10) {
+        // gold tier
+        creditsToAdd = Math.floor(amount * 1.1 / 10)
+      }
 
       // create tenancy transaction
       const transaction = await tx.tenancyTransaction.create({
