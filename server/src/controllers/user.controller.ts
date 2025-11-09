@@ -42,10 +42,18 @@ export const getUser = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const tenancyTransactionCount = await prisma.tenancyTransaction.count({
+    const tenancyTransactions = await prisma.tenancyTransaction.findMany({
       where: {
         user_id: urlUserId,
       },
+      select: {
+        id: true,
+        amount: true,
+      },
+    });
+    let tenancyTransactionCount = 0;
+    tenancyTransactions.forEach((transaction) => {
+      tenancyTransactionCount += Math.floor(Number(transaction.amount) / Number(user.cost_per_month));
     });
 
     // send the data
@@ -100,45 +108,5 @@ export const getUserHistoricalPerkTransactions = async (
     res
       .status(500)
       .json({ error: "Failed to retrieve historical perk transactions" });
-  }
-};
-
-/*
- * --- GET /users/:userId/tenancy-transaction-count ---
- * Returns how many tenancy transactions a user has made
- */
-export const getUserTenancyTransactionCount = async (
-  req: Request,
-  res: Response,
-) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorised (controller)" });
-    }
-
-    // get the user ID from the JWT token
-    const tokenUserId = req.user.userId;
-
-    // get the user ID from the URL
-    const urlUserId = Number(req.params.userId);
-
-    // security check: make sure the authenticated user is the one they are asking for
-    if (tokenUserId !== urlUserId) {
-      return res
-        .status(403)
-        .json({ error: "Forbidden: you can only view your own user info" });
-    }
-
-    // fetch the data
-    const count = await prisma.tenancyTransaction.count({
-      where: {
-        user_id: urlUserId,
-      },
-    });
-
-    res.status(200).json({ tenancyTransactionCount: count });
-
-  } catch (error) {
-   res.status(500).json({ error: "Failed to retrieve tenancy transaction count" });
   }
 };
