@@ -112,7 +112,7 @@ export default function DashboardPage() {
             ></div> 
           </div>
           <p className="p-1 text-center font-semibold text-md">
-            You are {10 - progress} rent payments away from your next loyalty tier!
+            You are {10 - progress} months worth of payments away from your next loyalty tier!
           </p>
           <br></br>
         </div>)}
