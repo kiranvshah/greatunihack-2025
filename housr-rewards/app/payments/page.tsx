@@ -29,10 +29,15 @@ export default function PaymentsPage() {
     setTransfer(false);
   }
 
+  const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
+
   useEffect(() => {
     if (view === "inProgress") {
-      fetchPayment();
-      setView("completed");
+      (async () => {
+        await fetchPayment();
+        await sleep(2000);
+        setView("completed");
+      })();
     }
   }, [view]);
 
