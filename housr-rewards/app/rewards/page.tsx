@@ -141,8 +141,8 @@ export default function RewardsPage() {
         perkDiv.className = "ml-30 mr-30 my-5 bg-[#d1f0df] leading-10 backdrop-blur-md shadow-md rounded-2xl p-5 justify-between flex gap-10 generated-entry";
         perkDiv.innerHTML = `
           <img src="${perk.image_url}" alt="${perk.title} icon" width="100" height="20" />
-          <div class="my-1 mr-120">
-            <p class="text-3xl font-semibold text-center ">Watch a movie for free!</p>
+          <div class="my-1 ml-40">
+            <p class="text-3xl font-semibold text-center ">${perk.title}</p>
             <p class="text-grey-xl font-medium">${perk.title} - ${perk.cost} Credits</p>
           </div>
             <button
