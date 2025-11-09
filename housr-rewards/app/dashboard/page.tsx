@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cred, setCred] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     ;(async () => {
@@ -30,6 +31,7 @@ export default function DashboardPage() {
         setCred(data.wallet_balance);
         console.log(data.wallet_balance);
         setEntries(data);
+        setProgress(data.tenancyTransactionCount);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
       } finally {
@@ -100,6 +102,36 @@ export default function DashboardPage() {
           View your reward credit transactions here.
         </p>
 
+        {progress < 10 && (
+        <div>
+          <br></br>
+          <div className="bg-gray-200 ml-40 mr-40 rounded-full h-4 dark:bg-green-950">
+            <div
+              className="h-4 rounded-full bg-gradient-to-r from-green-300 via-turqoise-500 to-green-600 animate-pulse"
+              style={{ width: `${progress*10}%` }}
+            ></div> 
+          </div>
+          <p className="p-1 text-center font-semibold text-md">
+            You are {10 - progress} rent payments away from your next loyalty tier!
+          </p>
+          <br></br>
+        </div>)}
+
+        {progress === 10 && (
+        <div>
+          <br></br>
+          <div className="bg-gray-200 ml-40 mr-40 rounded-full h-4">
+            <div
+              className="h-4 rounded-full bg-gradient-to-r from-yellow-300 via-orange-100 via-yellow-200 to-orange-400 animate-pulse"
+              style={{ width: `100%` }}
+            ></div> 
+          </div>
+          <p className="p-1 text-center font-semibold text-md text-yellow-900">
+            You are a gold tier member! You earn 10% extra credit on future rent payments.
+          </p>
+          <br></br>
+        </div>)}
+
         <div className="text-center p-6">
           <p
               className="relative inline-flex items-center justify-center
@@ -114,6 +146,8 @@ export default function DashboardPage() {
               You have: {cred} credits
           </p>
         </div>
+      <br></br>
+      
         
         <div id ="transactionHistory">
           <div className="ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10">
