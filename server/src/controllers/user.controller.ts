@@ -96,3 +96,43 @@ export const getUserHistoricalPerkTransactions = async (
       .json({ error: "Failed to retrieve historical perk transactions" });
   }
 };
+
+/*
+ * --- GET /users/:userId/tenancy-transaction-count ---
+ * Returns how many tenancy transactions a user has made
+ */
+export const getUserTenancyTransactionCount = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorised (controller)" });
+    }
+
+    // get the user ID from the JWT token
+    const tokenUserId = req.user.userId;
+
+    // get the user ID from the URL
+    const urlUserId = Number(req.params.userId);
+
+    // security check: make sure the authenticated user is the one they are asking for
+    if (tokenUserId !== urlUserId) {
+      return res
+        .status(403)
+        .json({ error: "Forbidden: you can only view your own user info" });
+    }
+
+    // fetch the data
+    const count = await prisma.tenancyTransaction.count({
+      where: {
+        user_id: urlUserId,
+      },
+    });
+
+    res.status(200).json({ tenancyTransactionCount: count });
+
+  } catch (error) {
+   res.status(500).json({ error: "Failed to retrieve tenancy transaction count" });
+  }
+};
