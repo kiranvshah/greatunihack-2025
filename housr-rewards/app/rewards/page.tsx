@@ -229,8 +229,7 @@ export default function RewardsPage() {
             <p className="my-8 text-center">You can now spend your code on your next purchase</p>
             {bonus > 0 && (
               <div>
-                <p className="text-green text-xl font-semibold text-shadow-[#d8ede1] text-shadow-lg text-center">You have earned {bonus} bonus credits for redeeming your first perk!</p>
-                <p className="text-gray-800 font-medium text-center">{msg}</p>
+                <p className="text-green text-xl font-semibold text-shadow-[#d8ede1] text-shadow-lg text-center">{msg}</p>
               </div>
             )}
           </div>
