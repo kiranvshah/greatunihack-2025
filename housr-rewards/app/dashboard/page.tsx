@@ -64,9 +64,16 @@ export default function DashboardPage() {
         perkTransactions.sort((a, b) => new Date(b.date_time).getTime() - new Date(a.date_time).getTime());
 
         const transactionHistoryContainer = document.getElementById("transactionHistory") as HTMLDivElement;
+        
+        // remove existing generated entries
+        const existingEntries = transactionHistoryContainer.getElementsByClassName("generated-entry");
+        while (existingEntries.length > 0) {
+          existingEntries[0].parentNode?.removeChild(existingEntries[0]);
+        }
+
         for (const transaction of perkTransactions) {
           const transactionDiv = document.createElement("div");
-          transactionDiv.className = "ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md shadow-md rounded-2xl p-5 justify-between flex gap-10";
+          transactionDiv.className = "ml-30 mr-30 my-5 bg-[#daf5e6] leading-10 backdrop-blur-md shadow-md rounded-2xl p-5 justify-between flex gap-10 generated-entry";
           transactionDiv.innerHTML = `<a class="font-semibold text-xl text-gray-800">${transaction.perk.title}</a>
             <a class="font-semibold text-xl text-gray-800">${new Date(transaction.date_time).toLocaleDateString()}</a>
             <a class="font-semibold text-xl text-gray-800">-${transaction.perk.cost}</a>
@@ -75,7 +82,7 @@ export default function DashboardPage() {
         }
         if (perkTransactions.length === 0) {
           const noTransactionsDiv = document.createElement("div");
-          noTransactionsDiv.className = "ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10";
+          noTransactionsDiv.className = "ml-30 mr-30 my-5 leading-10 p-5 justify-between flex gap-10 generated-entry";
           noTransactionsDiv.innerHTML = `<a class="font-semibold text-xl text-gray-800">No transactions found.</a>`;
           transactionHistoryContainer.appendChild(noTransactionsDiv);
         }
