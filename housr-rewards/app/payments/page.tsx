@@ -42,21 +42,24 @@ export default function PaymentsPage() {
       const userId = sessionStorage.getItem("userId") || "";
 
       try {
-        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/users/${userId}`, {
-          method: "GET",
+        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/tenancy-transactions`, {
+          method: "POST",
           headers: {
             "Authorization": `Bearer ${authToken}`,
-          }   
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            monthsPaidFor: threemonth ? 3 : 1,
+          }),
         })
         const data = await res.json();
-        console.log(threemonth);
-        console.log(data);
-        setCred(data.wallet_balance);
-        console.log(data.wallet_balance);
+        console.log(data)
+        
+        setCred(data.updatedUser.wallet_balance);
         if (threemonth) {
-          setGain(Math.floor(data.cost_per_month / 10) * 3);
+          setGain(Math.floor(data.updatedUser.cost_per_month / 10) * 3);
         } else {
-          setGain(Math.floor(data.cost_per_month / 10));
+          setGain(Math.floor(data.updatedUser.cost_per_month / 10));
         }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -89,29 +92,6 @@ export default function PaymentsPage() {
     fetchEntries();
   }, []);
 
-  useEffect(() => {
-    const fetchEntries = async () => {
-      const authToken = sessionStorage.getItem("authToken") || "";
-      const userId = sessionStorage.getItem("userId") || "";
-
-      try {
-        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/tenancy-transactions`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-
-        })
-        const data = await res.json();
-        console.log(data);
-        } catch (err) {
-        console.error("Error fetching dashboard data:", err);
-        }
-        
-    };
-    fetchEntries();
-  }, []);
 
   useEffect(() => {
     (async () => {
