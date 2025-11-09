@@ -18,7 +18,7 @@ export default function DashboardPage() {
       const userId = sessionStorage.getItem("userId") || "";
 
       try {
-        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/users/${userId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/${userId}`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${authToken}`,

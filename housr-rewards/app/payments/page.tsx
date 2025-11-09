@@ -42,7 +42,7 @@ export default function PaymentsPage() {
       const userId = sessionStorage.getItem("userId") || "";
 
       try {
-        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/tenancy-transactions`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/tenancy-transactions`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${authToken}`,
@@ -75,7 +75,7 @@ export default function PaymentsPage() {
       const authToken = sessionStorage.getItem("authToken") || "";
       const userId = sessionStorage.getItem("userId") || "";
       try {
-        const res = await fetch(`https://housr-rewards-backend.onrender.com/api/v1/users/${userId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/${userId}`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${authToken}`,
