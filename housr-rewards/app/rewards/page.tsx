@@ -100,6 +100,8 @@ export default function RewardsPage() {
             perkId: perkIdToRedeem,
           }),
         })
+        setPerkIdToRedeem(null); // don't accidentally call again
+
         const data = await res.json();
         console.log(data)
 
