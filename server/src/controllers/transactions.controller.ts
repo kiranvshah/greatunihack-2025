@@ -117,7 +117,9 @@ export const createPerkTransaction = async (req: Request, res: Response) => {
         },
       });
 
-      return { transaction, updatedUser };
+      const rewardCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+
+      return { transaction, updatedUser, rewardCode };
     });
 
     res.status(201).json(result);

@@ -7,6 +7,7 @@ export default function RewardsPage() {
 
   const [view, setView] = useState<"default" | "redeem">("default");
   const [perkIdToRedeem, setPerkIdToRedeem] = useState<number | null>(null);
+  const [rewardCode, setRewardCode] = useState<string>("");
   const [transfer, setTransfer] = useState(false);
 
   const [copied, setCopied] = useState(false);
@@ -21,7 +22,7 @@ export default function RewardsPage() {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(rewardCode || "no reward code found");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -52,7 +53,7 @@ export default function RewardsPage() {
         const data = await res.json();
         console.log(data)
 
-        // todo: do something with data
+        setRewardCode(data.rewardCode);
         
         
       } catch (err) {
@@ -137,7 +138,7 @@ export default function RewardsPage() {
           <div className="ml-60 mr-60 leading-10 backdrop-blur-md shadow-md rounded-2xl p-10">
             <p className="text-2xl font-semibold text-center my-10">Generating your unique code...</p>
             <div className="flex items-center justify-between w-full max-w-md mx-auto p-3 bg-gray-100 rounded-2xl shadow-sm">
-              <span className="truncate text-gray-900 font-medium">{text}</span>
+              <span className="truncate text-gray-900 font-medium">{rewardCode}</span>
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-2"
